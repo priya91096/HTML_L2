@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html>
+    <body>
+        <style>
+            #container{
+                text-align: center;
+                margin: 20px 20% 0 20%;
+            }
+        #SVGs{
+            width:100px;
+            height:100px;
+            margin: 20px 0 0 43.4%;
+            position:relative;
+        }
+        .section,.section1{
+            width:100px;
+            height:100px;
+            position:absolute;
+            top:0;
+            left:0;
+        }
+        .section{
+            z-index:10;
+        }
+        .section2{
+            z-index:10;
+        }
+        </style>
+        
+        <section id ="container">
+            <h2>Drag and drop the logo image into any Circle:</h2>
+            <section id="SVGs">
+                <section class="section">
+                    <svg width="100" height="100">
+                        <circle id="abc" cx="50" cy="50" r="49" stroke="black" style="fill:yellow" />
+                    </svg>
+                    <section id="section" class="section" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    </section>
+                </section>
+            </section>
+            
+            <section id="SVGs">
+                <section class="section1">
+                    <svg width="100" height="100">
+                        <circle id="abc" cx="50" cy="50" r="49" stroke="black" style="fill:green"/>
+                    </svg>
+                    <section id="section1" class="section1" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    </section>
+                </section>
+            </section>
+            
+            <br/><br/>
+            
+            <section>
+                <div class="image-cropper">
+                    <img id="drag" src="https://brjon1.files.wordpress.com/2012/04/animated-gif.gif" draggable="true" ondragstart="drag(event)" width="100" height="100">
+                        </div>
+                
+            </section>
+            
+            <h3>Location:</h3>
+            <div id="result"></div>
+            
+            <script>
+                function allowDrop(ev) {
+                    ev.preventDefault();
+                }
+            
+            function drag(ev) {
+                ev.dataTransfer.setData("drag", ev.target.id);
+            }
+            
+            function drop(ev) {
+                ev.preventDefault();
+                var data = ev.dataTransfer.getData("drag");
+                ev.target.appendChild(document.getElementById(data));
+            }
+
+            var showLocation = document.getElementById("result");
+            
+            document.body.onload = function(){
+                userLocation ();
+            };
+            
+            function userLocation () {
+                if(navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPoints);
+                } else {
+                    showLocation.innerHTML = "Your browser does not support this feature.";
+                }
+            }
+            
+            function showPoints (position) {
+                showLocation.innerHTML = "Latitude: " + position.coords.latitude +
+                "<br> Longitude: " + position.coords.longitude;
+                
+            }
+
+            if (typeof(Storage) !== "undefined") {
+                // Store
+                localStorage.setItem("Latitude", position.coords.latitude);
+                localStorage.setItem("Longitude",position.coords.longitude);
+                // Retrieve
+                document.getElementById("result").innerHTML = localStorage.getItem("Latitude");
+                document.getElementById("result").innerHTML = localStorage.getItem("Longitude");
+                
+            } else {
+                document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage";
+            }
+            </script>
+        </section>
+    </body>
+</html>
